@@ -5,6 +5,8 @@ import DashboardLayout from './components/Layout/DashboardLayout';
 import Home from './pages/Home';
 import FindJobsPage from './pages/FindJobsPage';
 import Login from './pages/auth/Login';
+import ApplyJobPage from './pages/ApplyJobPage';
+import ProfilePage from './pages/ProfilePage';
 import EmployerDashboard from './pages/Employer/EmployerDashboard';
 import CandidateDashboard from './pages/Candidate/CandidateDashboard';
 import FeaturePage from './pages/FeaturePage';
@@ -18,6 +20,28 @@ const App = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="jobs" element={<FindJobsPage />} />
+          <Route path="jobs/:jobId/apply" element={<ApplyJobPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route
+            path="company-reviews"
+            element={
+              <FeaturePage
+                title="Find great places to work"
+                description="Explore company reviews, ratings and open roles in a simple, professional layout."
+                backTo="/"
+              />
+            }
+          />
+          <Route
+            path="salary-guide"
+            element={
+              <FeaturePage
+                title="Salary Guide"
+                description="Browse salary insights by role, location and experience level."
+                backTo="/"
+              />
+            }
+          />
           <Route path="login" element={<Login />} />
         </Route>
         

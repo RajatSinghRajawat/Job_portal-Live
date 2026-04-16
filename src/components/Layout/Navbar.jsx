@@ -1,80 +1,113 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '../common/Button';
-import usePortalData from '../../hooks/usePortalData';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { brand, navigation } = usePortalData();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass shadow-sm py-4' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">{brand.shortName}</span>
-            </div>
-            <span className={`text-2xl font-bold ${isScrolled ? 'text-slate-800' : 'text-slate-800'}`}>
-              {brand.name}
-            </span>
+    <nav className="fixed top-0 w-full z-50 border-b border-slate-200 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6 min-w-0">
+          <Link to="/" className="text-3xl font-bold text-blue-700 leading-none">
+            indeed
           </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.publicLinks.map((item) => (
-              <Link key={item.to} to={item.to} className="text-slate-600 hover:text-primary-600 font-medium transition-colors">
-                {item.label}
-              </Link>
-            ))}
-            <div className="h-6 w-px bg-slate-300"></div>
-            <Link to="/login" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">Login</Link>
-            <Link to="/login">
-              <Button variant="primary">Post a Job</Button>
-            </Link>
+          <div className="hidden md:flex items-center gap-5 text-sm text-slate-600">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `hover:text-blue-700 ${isActive ? 'text-blue-700 border-b-2 border-blue-700 pb-1' : ''}`
+              }
+              end
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/company-reviews"
+              className={({ isActive }) =>
+                `hover:text-blue-700 ${isActive ? 'text-blue-700 border-b-2 border-blue-700 pb-1' : ''}`
+              }
+            >
+              Company reviews
+            </NavLink>
+            <NavLink
+              to="/salary-guide"
+              className={({ isActive }) =>
+                `hover:text-blue-700 ${isActive ? 'text-blue-700 border-b-2 border-blue-700 pb-1' : ''}`
+              }
+            >
+              Salary guide
+            </NavLink>
           </div>
+        </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-600 hover:text-primary-600 focus:outline-none">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-              </svg>
-            </button>
-          </div>
+        <div className="flex items-center gap-3 text-slate-600 relative" ref={userMenuRef}>
+          <button type="button" className="p-2 rounded-full hover:bg-slate-100" aria-label="Saved jobs">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+              <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+            </svg>
+          </button>
+          <button type="button" className="p-2 rounded-full hover:bg-slate-100" aria-label="Messages">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+              <path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H8l-5 4V5a1 1 0 0 1 1-1z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsUserMenuOpen((prev) => !prev)}
+            className="p-2 rounded-full hover:bg-slate-100"
+            aria-label="Account"
+          >
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.33 0-8 2.17-8 5v1h16v-1c0-2.83-3.67-5-8-5z" />
+            </svg>
+          </button>
+
+          {isUserMenuOpen && (
+            <div className="absolute right-0 top-12 w-80 bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden z-50">
+              <div className="px-5 py-5">
+                <p className="text-3xl font-semibold text-slate-800 leading-tight break-words">
+                  mayant.tipsgalwar@gmail.com
+                </p>
+                <div className="mt-5 space-y-2">
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50"
+                  >
+                    <span className="text-xl">Profile</span>
+                  </Link>
+                  {['My reviews', 'Settings', 'Help', 'Privacy Centre'].map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-slate-700 hover:bg-slate-50"
+                    >
+                      <span className="text-xl">{item}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-slate-200 p-4">
+                <button type="button" className="w-full text-center text-blue-700 text-4xl font-semibold py-2">
+                  Sign out
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-slate-100 py-4 px-4 flex flex-col gap-4">
-          {navigation.publicLinks.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <div className="h-px w-full bg-slate-100 my-2"></div>
-          <Link to="/login" className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg" onClick={() => setMobileMenuOpen(false)}>Login</Link>
-          <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-            <Button variant="primary" className="w-full">Post a Job</Button>
-          </Link>
-        </div>
-      )}
     </nav>
   );
 };
