@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 
@@ -14,8 +15,12 @@ const EmployerDashboard = () => {
             <p className="text-primary-100 text-lg max-w-xl">You have 12 new applications across your 3 active job postings. Let's find your next great hire.</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-3">
-            <Button variant="secondary" className="bg-white/10 border-none text-white hover:bg-white/20">View Reports</Button>
-            <Button className="bg-white text-primary-700 hover:bg-slate-50">Post a New Job</Button>
+            <Link to="/employer/jobs">
+              <Button variant="secondary" className="bg-white/10 border-none text-white hover:bg-white/20">View Reports</Button>
+            </Link>
+            <Link to="/employer/post-job">
+              <Button className="bg-white text-primary-700 hover:bg-slate-50">Post a New Job</Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -78,7 +83,7 @@ const EmployerDashboard = () => {
                       </span>
                     </td>
                     <td className="py-4 pl-4">
-                      <button className="text-primary-600 hover:text-primary-800 font-medium">Review</button>
+                      <Link to="/employer/applicants" className="text-primary-600 hover:text-primary-800 font-medium">Review</Link>
                     </td>
                   </tr>
                 ))}
@@ -92,7 +97,9 @@ const EmployerDashboard = () => {
           <Card className="border-0 shadow-sm bg-gradient-to-br from-indigo-50 to-white">
             <h3 className="font-bold text-slate-800 mb-2">Boost Your Reach</h3>
             <p className="text-sm text-slate-600 mb-4">Promote your urgent openings to appear at the top of candidate feeds.</p>
-            <Button variant="primary" className="w-full">Promote a Job</Button>
+            <Link to="/employer/post-job">
+              <Button variant="primary" className="w-full">Promote a Job</Button>
+            </Link>
           </Card>
           
           <Card className="border-0 shadow-sm">

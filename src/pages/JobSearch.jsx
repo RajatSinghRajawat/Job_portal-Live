@@ -2,18 +2,24 @@ import React, { useState } from 'react';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import JobCard from '../components/common/JobCard';
-
-const mockJobs = [
-  { id: 1, title: 'Senior Frontend Engineer', company: 'TechCorp', logo: '', location: 'Remote', type: 'Full-time', salary: '$120k - $150k', postedAt: '2h ago', urgent: true },
-  { id: 2, title: 'Product Designer', company: 'Creative Solutions', logo: '', location: 'New York, NY', type: 'Full-time', salary: '$90k - $120k', postedAt: '5h ago', urgent: false },
-  { id: 3, title: 'Backend Developer (Node.js)', company: 'InnovateTech', logo: '', location: 'San Francisco, CA', type: 'Contract', salary: '$80 - $100/hr', postedAt: '1d ago', urgent: false },
-  { id: 4, title: 'Marketing Specialist', company: 'Global Reach', logo: '', location: 'Remote', type: 'Full-time', salary: '$70k - $90k', postedAt: '2d ago', urgent: false },
-  { id: 5, title: 'Data Analyst', company: 'DataGenix', logo: '', location: 'Austin, TX', type: 'Full-time', salary: '$85k - $110k', postedAt: '3d ago', urgent: true },
-  { id: 6, title: 'DevOps Engineer', company: 'CloudFirst', logo: '', location: 'Seattle, WA', type: 'Full-time', salary: '$130k - $160k', postedAt: '1w ago', urgent: false },
-];
+import usePortalData from '../hooks/usePortalData';
+import useJobSearch from '../hooks/useJobSearch';
 
 const JobSearch = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { jobs } = usePortalData();
+  const {
+    query,
+    setQuery,
+    location,
+    setLocation,
+    selectedTypes,
+    selectedModes,
+    toggleType,
+    toggleMode,
+    clearFilters,
+    filteredJobs,
+  } = useJobSearch(jobs.list);
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -23,10 +29,10 @@ const JobSearch = () => {
           <h1 className="text-3xl font-bold text-slate-800 mb-6">Find Your Next Job</h1>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
-              <Input placeholder="Job title, keywords..." className="shadow-sm" />
+              <Input placeholder="Job title, keywords..." className="shadow-sm" value={query} onChange={(e) => setQuery(e.target.value)} />
             </div>
             <div className="flex-1">
-              <Input placeholder="Location or Remote" className="shadow-sm" />
+              <Input placeholder="Location or Remote" className="shadow-sm" value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <Button size="lg" className="w-full md:w-auto px-8 shadow-sm">Search</Button>
             <Button variant="outline" className="md:hidden" onClick={() => setIsFilterOpen(!isFilterOpen)}>
@@ -42,7 +48,7 @@ const JobSearch = () => {
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm sticky top-28">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-slate-800">Filters</h2>
-              <button className="text-sm text-primary-600 font-medium hover:underline">Clear all</button>
+              <button className="text-sm text-primary-600 font-medium hover:underline" onClick={clearFilters}>Clear all</button>
             </div>
             
             <div className="space-y-6">
@@ -50,9 +56,14 @@ const JobSearch = () => {
               <div>
                 <h3 className="font-semibold text-slate-700 mb-3">Job Type</h3>
                 <div className="space-y-2">
-                  {['Full-time', 'Part-time', 'Contract', 'Freelance', 'Internship'].map((type) => (
+                  {jobs.jobTypes.map((type) => (
                     <label key={type} className="flex items-center space-x-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+                      <input
+                        type="checkbox"
+                        checked={selectedTypes.includes(type)}
+                        onChange={() => toggleType(type)}
+                        className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                      />
                       <span className="text-slate-600 group-hover:text-slate-900">{type}</span>
                     </label>
                   ))}
@@ -63,9 +74,14 @@ const JobSearch = () => {
               <div className="pt-6 border-t border-slate-100">
                 <h3 className="font-semibold text-slate-700 mb-3">Work Mode</h3>
                 <div className="space-y-2">
-                  {['Remote', 'On-site', 'Hybrid'].map((mode) => (
+                  {jobs.workModes.map((mode) => (
                     <label key={mode} className="flex items-center space-x-3 cursor-pointer group">
-                      <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500" />
+                      <input
+                        type="checkbox"
+                        checked={selectedModes.includes(mode)}
+                        onChange={() => toggleMode(mode)}
+                        className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                      />
                       <span className="text-slate-600 group-hover:text-slate-900">{mode}</span>
                     </label>
                   ))}
@@ -88,7 +104,7 @@ const JobSearch = () => {
         {/* Job Listings */}
         <main className="flex-1">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-slate-600 font-medium">Showing <span className="text-slate-900 font-bold">{mockJobs.length}</span> jobs</h2>
+            <h2 className="text-slate-600 font-medium">Showing <span className="text-slate-900 font-bold">{filteredJobs.length}</span> jobs</h2>
             <select className="bg-white border border-slate-200 text-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-sm cursor-pointer">
               <option>Most Relevant</option>
               <option>Most Recent</option>
@@ -97,7 +113,7 @@ const JobSearch = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {mockJobs.map((job) => (
+            {filteredJobs.map((job) => (
               <JobCard key={job.id} job={job} />
             ))}
           </div>

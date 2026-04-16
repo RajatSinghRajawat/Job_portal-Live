@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../common/Button';
+import usePortalData from '../../hooks/usePortalData';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { brand, navigation } = usePortalData();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,18 +23,20 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">J</span>
+              <span className="text-white font-bold text-lg">{brand.shortName}</span>
             </div>
             <span className={`text-2xl font-bold ${isScrolled ? 'text-slate-800' : 'text-slate-800'}`}>
-              JobPortal
+              {brand.name}
             </span>
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/jobs" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">Find Jobs</Link>
-            <Link to="#" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">Companies</Link>
-            <Link to="/candidate/dashboard" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">Dashboard</Link>
+            {navigation.publicLinks.map((item) => (
+              <Link key={item.to} to={item.to} className="text-slate-600 hover:text-primary-600 font-medium transition-colors">
+                {item.label}
+              </Link>
+            ))}
             <div className="h-6 w-px bg-slate-300"></div>
             <Link to="/login" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">Login</Link>
             <Link to="/login">
@@ -54,9 +58,16 @@ const Navbar = () => {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-slate-100 py-4 px-4 flex flex-col gap-4">
-          <Link to="/jobs" className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg" onClick={() => setMobileMenuOpen(false)}>Find Jobs</Link>
-          <Link to="#" className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg" onClick={() => setMobileMenuOpen(false)}>Companies</Link>
-          <Link to="/candidate/dashboard" className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg" onClick={() => setMobileMenuOpen(false)}>Dashboard</Link>
+          {navigation.publicLinks.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
           <div className="h-px w-full bg-slate-100 my-2"></div>
           <Link to="/login" className="text-slate-600 font-medium px-4 py-2 hover:bg-slate-50 rounded-lg" onClick={() => setMobileMenuOpen(false)}>Login</Link>
           <Link to="/login" onClick={() => setMobileMenuOpen(false)}>

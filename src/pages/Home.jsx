@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/common/Button';
-import Input from '../components/common/Input';
 import Card from '../components/common/Card';
+import usePortalData from '../hooks/usePortalData';
 
 const Home = () => {
+  const { home } = usePortalData();
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -17,11 +19,9 @@ const Home = () => {
         </div>
 
         <div className="max-w-4xl mx-auto text-center z-10 relative">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-800 tracking-tight mb-8">
-            Find your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-indigo-600">dream job</span> today
-          </h1>
+          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-800 tracking-tight mb-8">{home.heroTitle}</h1>
           <p className="text-lg md:text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Connect with top employers and discover opportunities that match your passion and expertise. Elevate your career with JobPortal.
+            {home.heroDescription}
           </p>
 
           {/* Search Glass Card */}
@@ -47,9 +47,11 @@ const Home = () => {
           
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm font-medium text-slate-500">
             <span>Popular:</span>
-            <a href="#" className="hover:text-primary-600 transition-colors">Software Engineer</a>
-            <a href="#" className="hover:text-primary-600 transition-colors">Product Manager</a>
-            <a href="#" className="hover:text-primary-600 transition-colors">Data Scientist</a>
+            {home.popularSearches.map((item) => (
+              <Link key={item} to="/jobs" className="hover:text-primary-600 transition-colors">
+                {item}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -63,13 +65,13 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {['Technology', 'Marketing', 'Finance', 'Design', 'Sales', 'Healthcare', 'Engineering', 'Human Resources'].map((category, idx) => (
+            {home.categories.map((category, idx) => (
               <Card hover key={idx} className="text-center p-8 group">
                 <div className="w-14 h-14 mx-auto bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
                 </div>
                 <h3 className="text-lg font-bold text-slate-800 mb-2">{category}</h3>
-                <p className="text-slate-500 text-sm">{Math.floor(Math.random() * 500) + 100} open positions</p>
+                <p className="text-slate-500 text-sm">{120 + idx * 24} open positions</p>
               </Card>
             ))}
           </div>

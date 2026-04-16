@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from './Card';
 import Button from './Button';
 
@@ -48,7 +49,9 @@ const JobCard = ({ job }) => {
 
       <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100">
         <span className="text-xs text-slate-400 font-medium">Posted {job.postedAt}</span>
-        <Button variant="primary" size="sm" className="px-4 py-1.5">Apply Now</Button>
+        <Link to="/login">
+          <Button variant="primary" size="sm" className="px-4 py-1.5">Apply Now</Button>
+        </Link>
       </div>
     </Card>
   );

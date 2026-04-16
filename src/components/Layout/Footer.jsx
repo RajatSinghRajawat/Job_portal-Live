@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import usePortalData from '../../hooks/usePortalData';
 
 const Footer = () => {
+  const { brand, navigation } = usePortalData();
+
   return (
     <footer className="bg-slate-900 border-t border-slate-800 text-slate-300 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -9,32 +12,38 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">J</span>
+                <span className="text-white font-bold text-lg">{brand.shortName}</span>
               </div>
-              <span className="text-2xl font-bold text-white">JobPortal</span>
+              <span className="text-2xl font-bold text-white">{brand.name}</span>
             </Link>
             <p className="text-slate-400 text-sm mt-4 leading-relaxed">
-              Connecting top talent with the best companies globally. Streamline your hiring or land your dream job today.
+              {brand.tagline}
             </p>
           </div>
           
           <div>
             <h3 className="text-white font-semibold mb-4">Candidates</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link to="/jobs" className="hover:text-white transition-colors">Search Jobs</Link></li>
-              <li><a href="#" className="hover:text-white transition-colors">Browse Companies</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Salary Tools</a></li>
-              <li><Link to="/candidate/dashboard" className="hover:text-white transition-colors">Candidate Dashboard</Link></li>
+              {navigation.footerCandidateLinks.map((item) => (
+                <li key={item.to}>
+                  <Link to={item.to} className="hover:text-white transition-colors">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-4">Employers</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><Link to="/login" className="hover:text-white transition-colors">Post a Job</Link></li>
-              <li><a href="#" className="hover:text-white transition-colors">Search Resumes</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Pricing Options</a></li>
-              <li><Link to="/employer/dashboard" className="hover:text-white transition-colors">Employer Dashboard</Link></li>
+              {navigation.footerEmployerLinks.map((item) => (
+                <li key={item.to}>
+                  <Link to={item.to} className="hover:text-white transition-colors">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
