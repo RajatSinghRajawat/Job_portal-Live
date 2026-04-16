@@ -1,0 +1,175 @@
+Project Overview
+The proposed platform is a digital job marketplace designed to connect professionals and
+employers.
+The platform will allow:
+● Candidates to create profiles, search jobs, and apply
+● Employers to register, post job listings, and search candidate profiles
+● Admins to verify job postings before they go live
+● The website can be easily translated in local language with a click
+The goal is to create a centralized hiring platform for professionals, simplifying recruitment and
+job discovery.
+Project Objectives
+The platform aims to:
+● Provide a simple job discovery experience for professionals
+● Enable employers to easily post and manage job listings
+● Allow employers to search candidate profiles
+● Ensure quality job listings through admin verification
+● Provide dashboards for employers and candidates to manage their
+activities Additional monetization features:
+● Employers can promote job postings as paid advertisements depending on the
+number of days selected.
+Functional Requirements
+1. Home Page
+1.1 Feature: Seeking Jobs
+Details
+● Redirects candidates to the Job Search Page
+● Search jobs by keywords
+● Search jobs by location
+● Login required before applying to jobs
+1.2 Feature: Hiring
+Details
+● Redirects employers to the Candidate Profile Search Page
+● Search candidate profiles by keywords
+● Display number of profiles available (blurred preview)
+● Login required to access full profiles
+● Employers can pay to unlock candidate contact details
+● Initially only first name will be visible
+2. Employer Module
+2.1 Feature: Employer Signup
+Details
+● Company Name
+● First Name
+● Last Name
+● Phone Number
+● Email Address
+● Google Sign-Up
+Verification
+● OTP verification on mobile number
+● Email confirmation link sent to registered email
+2.2 Feature: Employer Login
+Details
+● Login using phone number
+● OTP authentication
+● Google login
+Post Login Behavior
+● After successful login, employers will be redirected to the Job Posting Dashboard
+3. Job Posting Module
+3.1 Feature: Job Post Form
+Details
+● Job Title
+● Job Description (AI-assisted description generation)
+● Location
+● Employment Type
+● Salary Range
+● Required Skills
+3.2 Feature: Job Posting Management
+Details
+● Preview job before submission
+● Option to mark job as Paid Advertisement, Urgent Hiring
+● Job sent to Admin for verification
+● After approval, the job appears on the Job Listing Page
+● Chat box to chat with the candidates who have applied for their jobs
+4. Employer Dashboard
+4.1 Feature: Job Management
+Details
+● Post new jobs (include temporary/ freelancing jobs)
+● Manage job listings
+● Edit job details
+● Close job listings
+● View applicants
+4.2 Feature: Dashboard Sections
+Details
+● All Jobs
+● Active Jobs
+● Closed Jobs
+● Applicants (add note, shortlisted)
+● Payment History
+● Advertisement Management
+● Chat support
+5. Candidate Module
+5.1 Feature: Personal Information
+Details
+● First Name
+● Last Name
+● Email Address
+● Contact Number
+● Current Location
+○ Address
+○ City
+○ Pincode
+● Aadhaar Verification (Optional)
+○ Verified profiles display a verification badge
+● Preferred Job Locations (up to 3 cities)
+● Profile Summary / About Section (AI assisted)
+● Profile Photo
+● Degree (Optional)
+● Gender
+● Total Experience
+● Generate customized CV using the information filled by the candidate
+5.2 Feature: Professional Information
+Details
+● Current Job Title
+● Employment Type
+● Organization Name
+● Joining Date
+● Role Description
+● Skills (maximum 5 skills from dropdown + manual entry option)
+● Current Salary (per month / per annum)
+● Candidates can add job experience/s
+● System automatically calculates total work experience
+6. Educational Information
+6.1 Feature: Education Details
+Details
+● Level of Education (Dropdown)
+● Degree
+● Specialization
+● Course Type
+● Course Start Date
+● Course End Date
+● Percentage or Grade
+● Country
+● City
+● Additional Details (Optional)
+Optional Fields
+● Certifications
+● Professional Licenses
+7. Candidate Profile Preview
+7.1 Feature: Profile Review Before Submission
+Details
+● Preview profile
+● Edit information if required
+● Submit final profile
+7.2 Feature: Profile Export & Approval
+Details
+● Profile displayed in CV format.
+● Option to send CV link to anyone or export profile as downloadable CV
+● Admin approval required before profile becomes visible to employers
+8. Candidate Dashboard
+8.1 Feature: Job Management
+Details
+● Search job, saved jobs, fit score(you are 87% fit for this job)
+● Apply to job listings (get job alerts and apply via WhatsApp)
+● Track job applications
+● Update profile
+● Manage preferred job locations
+● Follow employers and notification for their job postings
+● Chat box to connect with the employers who have responded to their application
+8.2 Feature: Premium Features
+Details
+● Activate Profile Highlight
+● Activate Auto Apply for Jobs
+● Passive Job Mode: profile goes invisible publicly and only matched employers can reach out
+●
+9. Admin Panel
+9.1 Feature: Platform Management
+Details
+● Verify job postings before they go live
+● Approve or reject job listings
+● Manage employer accounts
+● Manage candidate profiles
+● Moderate platform content (fake or duplicate postings)
+● Monitor system activity
+o Candidate: job profile, city+area, salary range, time spent, active users
+o Employer: Organization type, city+area, posts per employee
+o Job: most posted jobs, most applied jobs, city wise jobs, jobs with less applicants
+● Manage advertisements and premium services
